@@ -2,6 +2,7 @@
 BS Cyber Security FYP | KFUEIT
 
 ## Project Structure
+- `visualizations/` - Master directory of all academic and technical visuals (architecture, SHAP, correlation).
 - `configs/` - Configuration files for Cowrie, ELK, and the AI Engine.
 - `scripts/` - Core Python and Bash scripts for detection and testing.
 - `ISOs/` - Hypervisor installation images (pfSense and Ubuntu 22.04).
