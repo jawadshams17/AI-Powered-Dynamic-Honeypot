@@ -15,7 +15,7 @@ def generate_correlation_analysis(data_path='../data/', plot_dir=None):
     print("[+] Initiating Statistical Correlation Analysis...")
     if plot_dir is None:
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        plot_dir = os.path.join(base_dir, 'logs', 'plots')
+        plot_dir = os.path.join(base_dir, 'visualizations')
     
     # 1. Load data
     df = pd.read_csv(os.path.join(data_path, 'training_data.csv'))
@@ -47,7 +47,7 @@ def generate_shap_visuals(model_path=None, data_path=None):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if model_path is None: model_path = os.path.join(base_dir, 'models')
     if data_path is None: data_path = os.path.join(base_dir, 'data')
-    plot_dir = os.path.join(base_dir, 'logs', 'plots')
+    plot_dir = os.path.join(base_dir, 'visualizations')
     
     os.makedirs(plot_dir, exist_ok=True)
     
