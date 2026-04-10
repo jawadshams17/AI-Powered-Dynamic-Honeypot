@@ -7,8 +7,39 @@ import joblib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 import shap
 from xgboost import XGBClassifier
+
+def generate_correlation_analysis(data_path='../data/', plot_dir=None):
+    print("[+] Initiating Statistical Correlation Analysis...")
+    if plot_dir is None:
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        plot_dir = os.path.join(base_dir, 'logs', 'plots')
+    
+    # 1. Load data
+    df = pd.read_csv(os.path.join(data_path, 'training_data.csv'))
+    
+    # 2. Select numeric features for correlation
+    features = [
+        'session_duration', 'num_commands', 'num_failed_logins',
+        'num_success_logins', 'unique_usernames', 'unique_passwords',
+        'has_download', 'num_downloads', 'avg_inter_cmd_time',
+        'cmd_entropy', 'has_wget_curl', 'has_chmod_exec',
+        'hour_of_day', 'src_ip_reputation', 'label'
+    ]
+    
+    corr_matrix = df[features].corr()
+    
+    # 3. Plot Heatmap
+    plt.figure(figsize=(14, 10))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
+    plt.title("AI Engine: Feature Correlation Matrix (Multicollinearity Audit)")
+    
+    corr_path = os.path.join(plot_dir, 'correlation_matrix.png')
+    plt.savefig(corr_path, bbox_inches='tight')
+    print(f"[SUCCESS] Correlation Matrix generated: {corr_path}")
+    plt.close()
 
 def generate_shap_visuals(model_path=None, data_path=None):
     print("[+] Initiating SHAP Interpretability Pipeline...")
@@ -83,6 +114,7 @@ def generate_shap_visuals(model_path=None, data_path=None):
 if __name__ == '__main__':
     try:
         generate_shap_visuals()
+        generate_correlation_analysis()
     except Exception as e:
         print(f"[!] Error in SHAP pipeline: {e}")
         import traceback
