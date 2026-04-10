@@ -10,3 +10,4 @@ seaborn
 scipy
 pillow
 flask
+shap
