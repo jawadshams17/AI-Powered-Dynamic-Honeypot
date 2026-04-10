@@ -1,0 +1,27 @@
+{
+    "elasticsearch": {
+        "host": "10.10.10.20",
+        "port": 9200,
+        "user": "elastic",
+        "password": "YOUR_ES_PASSWORD",
+        "index_pattern": "cowrie-logs-*",
+        "threat_index": "threat-analysis"
+    },
+    "pfsense": {
+        "url": "https://10.10.10.1/api/v2",
+        "client_id": "YOUR_API_CLIENT_ID",
+        "client_token": "YOUR_API_CLIENT_TOKEN",
+        "block_alias": "HONEYPOT_BLOCKED_IPS"
+    },
+    "engine": {
+        "poll_interval_seconds": 30,
+        "threat_threshold": 0.7,
+        "block_threshold": 0.85,
+        "whitelist_ips": ["10.10.10.50", "10.10.10.30", "10.10.10.20"]
+    },
+    "model": {
+        "path": "../models/",
+        "model_file": "threat_model.pkl",
+        "scaler_file": "scaler.pkl"
+    }
+}

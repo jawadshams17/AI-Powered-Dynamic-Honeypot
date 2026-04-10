@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<pfsense>
+	<version>23.5</version>
+	<system>
+		<hostname>router-ids</hostname>
+		<domain>kfueit.edu.pk</domain>
+	</system>
+	<interfaces>
+		<wan>
+			<enable/>
+			<if>vtnet0</if>
+			<ipaddr>dhcp</ipaddr>
+		</wan>
+		<lan>
+			<enable/>
+			<if>vtnet1</if>
+			<ipaddr>10.10.10.1</ipaddr>
+			<subnet>24</subnet>
+		</lan>
+		<opt1>
+			<enable/>
+			<if>vtnet2</if>
+			<ipaddr>10.10.20.1</ipaddr>
+			<subnet>24</subnet>
+			<descr><![CDATA[DMZ_HONEYPOT]]></descr>
+		</opt1>
+	</interfaces>
+	<aliases>
+		<alias>
+			<name>HONEYPOT_BLOCKED_IPS</name>
+			<type>host</type>
+			<address></address>
+			<descr><![CDATA[AI-powered dynamic block list]]></descr>
+			<detail></detail>
+		</alias>
+	</aliases>
+	<filter>
+		<rule>
+			<type>block</type>
+			<interface>wan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<protocol>any</protocol>
+			<source>
+				<address>HONEYPOT_BLOCKED_IPS</address>
+			</source>
+			<destination>
+				<any/>
+			</destination>
+			<descr><![CDATA[Block AI-identified threats]]></descr>
+		</rule>
+        <!-- Rule to allow SSH/Telnet to DMZ to honeypot ports 2222/2223 -->
+		<rule>
+			<type>pass</type>
+			<interface>wan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<protocol>tcp</protocol>
+			<source><any/></source>
+			<destination>
+				<address>10.10.20.10</address>
+				<port>2222</port>
+			</destination>
+			<descr><![CDATA[Allow SSH to Honeypot]]></descr>
+		</rule>
+	</filter>
+</pfsense>

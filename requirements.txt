@@ -1,0 +1,12 @@
+elasticsearch
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+requests
+matplotlib
+seaborn
+scipy
+pillow
+flask

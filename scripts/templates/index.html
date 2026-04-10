@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Honeypot - Real-Time Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card-bg: #161b22;
+            --primary: #58a6ff;
+            --success: #238636;
+            --danger: #f85149;
+            --text: #c9d1d9;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #8b949e;
+            text-transform: uppercase;
+        }
+        .card .value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 10px;
+            color: var(--primary);
+        }
+        .logs {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry { margin-bottom: 5px; }
+        .log-info { color: #8b949e; }
+        .log-alert { color: var(--danger); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ AI-Honeypot Console <span style="font-size: 14px; color: var(--success);">● Active</span></h1>
+            <div>Target: 10.10.20.10 (DMZ)</div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Total Attacks</h3>
+                <div class="value" id="attacks">{{ stats.total_attacks }}</div>
+            </div>
+            <div class="card">
+                <h3>AI Critical Alerts</h3>
+                <div class="value" id="threats" style="color: var(--danger);">{{ stats.high_threat }}</div>
+            </div>
+            <div class="card">
+                <h3>System Uptime</h3>
+                <div class="value" id="uptime">{{ stats.uptime }}</div>
+            </div>
+            <div class="card">
+                <h3>ML Engine Status</h3>
+                <div class="value" id="status" style="color: var(--success);">{{ stats.status }}</div>
+            </div>
+        </div>
+
+        <h2>Real-Time Kill Feed</h2>
+        <div class="logs" id="log-feed">
+            <div class="log-entry log-info">[SYSTEM] Initializing telemetry pipeline...</div>
+        </div>
+    </div>
+
+    <script>
+        function updateStats() {
+            fetch('/api/stats').then(r => r.json()).then(data => {
+                document.getElementById('attacks').innerText = data.total_attacks;
+                document.getElementById('threats').innerText = data.high_threat;
+            });
+            fetch('/api/logs').then(r => r.json()).then(data => {
+                const feed = document.getElementById('log-feed');
+                feed.innerHTML = data.map(line => `<div class="log-entry">${line}</div>`).join('');
+            });
+        }
+        setInterval(updateStats, 2000);
+    </script>
+</body>
+</html>
