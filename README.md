@@ -1,4 +1,4 @@
-# Adaptive AI-Powered Dynamic Honeypot with Real-Time Threat Hunting
+# Adaptive AI-Powered Dynamic Honeypot with Real-Time Threat Hunting (Real-time)
 BS Cyber Security FYP | KFUEIT
 
 ## Project Structure
